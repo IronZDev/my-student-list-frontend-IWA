@@ -1,0 +1,27 @@
+<ol><li *ngFor="let s of students"><app-student (studentDeleted) = "studentDeleted($event)" [student]="s"></app-student></li></ol>
+<button class="pure-button pure-button-primary movebutton" (click)="addStudentPanel()">{{showAddStudent === true ? "Close" : "Add student"}}</button>
+<div *ngIf="showAddStudent">
+  <br>
+  <form class="pure-form pure-form-aligned" name="newStudent" [formGroup]="addStudentForm">
+    <fieldset>
+      <div class="pure-control-group">
+        <label for="firstname">First name:</label>
+        <input class="form-control" formControlName="firstname" id="firstname" type="text" placeholder="First name" required autofocus #firstname>
+        <span *ngIf="addStudentForm.controls['firstname'].invalid && (addStudentForm.controls['firstname'].dirty || addStudentForm.controls['firstname'].touched)" class="pure-form-message-inline">This is a required field.</span>
+      </div>
+      <div class="pure-control-group">
+        <label for="surname">Surname:</label>
+        <input class="form-control" formControlName="surname" id="surname" type="text" placeholder="Surname" required #surname>
+        <span *ngIf="addStudentForm.controls['surname'].invalid && (addStudentForm.controls['surname'].dirty || addStudentForm.controls['surname'].touched)" class="pure-form-message-inline">This is a required field.</span>
+      </div>
+      <div class="pure-control-group">
+        <label for="studentID">Student ID:</label>
+        <input class="form-control" formControlName="studentID" id="studentID" type="number" placeholder="Student ID" required min="10000" max="99999" #ID>
+        <span *ngIf="addStudentForm.controls['studentID'].hasError('required') && (addStudentForm.controls['studentID'].dirty || addStudentForm.controls['studentID'].touched)" class="pure-form-message-inline">This is a required field.</span>
+        <span *ngIf="(addStudentForm.controls['studentID'].hasError('min') || addStudentForm.controls['studentID'].hasError('max')) && (addStudentForm.controls['studentID'].dirty || addStudentForm.controls['studentID'].touched)" class="pure-form-message-inline">Must consist of 5 digits</span>
+      </div>
+
+      <input type="submit" value="Submit" class="pure-button pure-button-primary movebutton" [disabled]="!addStudentForm.valid" (click)="addStudent(firstname.value, surname.value, ID); firstname.value=''; surname.value=''; ID.value=''">
+    </fieldset>
+  </form>
+</div>
