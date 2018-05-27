@@ -1,0 +1,15 @@
+<div align="center">
+  <form class="pure-form pure-form-stacked" [formGroup]="loginForm">
+    <fieldset>
+      <div class="pure-control-group">
+        <label for="username">Username:</label>
+        <input class="form-control" id="username" formControlName="username" type="text" placeholder="Username" required #username>
+      </div>
+      <div class="pure-control-group">
+        <label for="password">Password:</label>
+        <input class="form-control" formControlName="password" type="password" id="password" placeholder="Password" #password>
+      </div>
+    <button [disabled]="loginForm.invalid" class="button-small pure-button pure-button-primary" type="submit" (click)="login(username.value, password.value)">Log in</button>
+    </fieldset>
+  </form>
+</div>
