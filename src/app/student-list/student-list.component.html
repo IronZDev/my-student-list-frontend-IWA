@@ -21,7 +21,7 @@
         <span *ngIf="(addStudentForm.controls['studentID'].hasError('min') || addStudentForm.controls['studentID'].hasError('max')) && (addStudentForm.controls['studentID'].dirty || addStudentForm.controls['studentID'].touched)" class="pure-form-message-inline">Must consist of 5 digits</span>
       </div>
 
-      <input type="submit" value="Submit" class="pure-button pure-button-primary movebutton" [disabled]="!addStudentForm.valid" (click)="addStudent(firstname.value, surname.value, ID); firstname.value=''; surname.value=''; ID.value=''">
+      <input type="submit" value="Submit" class="pure-button pure-button-primary movebutton" [disabled]="!addStudentForm.valid" (click)="addStudent(firstname.value, surname.value, ID); firstname.value=''; surname.value=''; ID.value=''; addStudentForm.reset();">
     </fieldset>
   </form>
 </div>
