@@ -14,5 +14,4 @@ export class AuthService {
     console.log('attempAuth');
     return this.http.post('http://localhost:8080/token/generate-token', credentials);
   }
-
 }

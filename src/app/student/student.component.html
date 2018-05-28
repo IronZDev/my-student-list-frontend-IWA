@@ -1,7 +1,7 @@
 <div class="pure-g">
   <div class="pure-u-1-4 move-section"><p>{{student.firstname}} {{student.lastname}}</p></div>
   <div class="pure-u-1-4 move-section"><p>{{student.studentID}}</p></div>
-  <div class="pure-u-1-4 move-section"><p>Average: {{student.average}}</p></div>
+  <div class="pure-u-1-4 move-section"><p>Average: {{student.average === 0 ? "No marks" : student.average}}</p></div>
 <div class="pure-u-1-4 pure-button-group move-section" role="manageStudent"><p>
   <button [hidden]="!checkIsLogged()" class="pure-button button-small" (click)="toggleAddMark()">{{showAddMark === true ? "Cancel" : "Add mark"}}</button>
   <button class="pure-button button-small" (click)="toggleAllMarks()">{{showAllMarks === true ? "Hide all marks" : "Show all marks"}}</button>
@@ -25,7 +25,11 @@
           <input class="form-control" formControlName="mark" type="number" name="editMark" value={{mark.value}} min="1" max="6" #value><br>
           Weight:
           <input class="form-control" formControlName="weight" type="number" name="editWeight" value={{mark.weight}} min="1" max="5" #weight><br>
-          <button [disabled]="editMarkForm.invalid" class="button-small pure-button pure-button-primary" type="submit" (click)="editMark(mark, subject, value, weight); editMarkForm.reset();">Submit</button>
+          <button [disabled]="((editMarkForm.controls['subject'].dirty || editMarkForm.controls['subject'].touched) && editMarkForm.controls['subject'].invalid) ||
+                              ((editMarkForm.controls['mark'].dirty || editMarkForm.controls['mark'].touched) && editMarkForm.controls['mark'].invalid) ||
+                              ((editMarkForm.controls['weight'].dirty || editMarkForm.controls['weight'].touched) && editMarkForm.controls['weight'].invalid)"
+                  class="button-small pure-button pure-button-primary" type="submit" (click)="editMark(mark, subject, value, weight); editMarkForm.reset();">Submit
+          </button>
         </form>
       </div>
 
