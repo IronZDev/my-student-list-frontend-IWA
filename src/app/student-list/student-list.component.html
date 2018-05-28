@@ -1,5 +1,5 @@
 <ol><li *ngFor="let s of students"><app-student (studentDeleted) = "studentDeleted($event)" [student]="s"></app-student></li></ol>
-<button class="pure-button pure-button-primary movebutton" (click)="addStudentPanel()">{{showAddStudent === true ? "Close" : "Add student"}}</button>
+<button [hidden]="!checkIsLogged()" class="pure-button pure-button-primary movebutton" (click)="addStudentPanel()">{{showAddStudent === true ? "Close" : "Add student"}}</button>
 <div *ngIf="showAddStudent">
   <br>
   <form class="pure-form pure-form-aligned" name="newStudent" [formGroup]="addStudentForm">

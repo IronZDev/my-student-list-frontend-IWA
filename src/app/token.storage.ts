@@ -9,6 +9,7 @@ export class TokenStorage {
   constructor() { }
 
   signOut() {
+    console.log('Logout!');
     window.sessionStorage.removeItem(TOKEN_KEY);
     window.sessionStorage.clear();
   }
@@ -20,5 +21,12 @@ export class TokenStorage {
 
   public getToken(): string {
     return sessionStorage.getItem(TOKEN_KEY);
+  }
+
+  public isLogged(): boolean {
+    if (sessionStorage.getItem(TOKEN_KEY)) {
+      return true;
+    }
+    return false;
   }
 }

@@ -1,28 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {Student} from '../student';
 import {StudentService} from '../student.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TokenStorage} from '../token.storage';
+import {Subscription} from 'rxjs/Subscription';
+import {CommunicatorService} from '../communicator.service';
 
 @Component({
   selector: 'app-student-list',
   templateUrl: './student-list.component.html',
   styleUrls: ['./student-list.component.css']
 })
-export class StudentListComponent implements OnInit {
+export class StudentListComponent implements OnInit, OnDestroy {
   addStudentForm: FormGroup;
   students: Student[];
   showAddStudent: boolean;
-  // constructor() {
-  //   this.students = [
-  //     new Student('Mikolaj', 'Sprosniak', 997),
-  //     new Student('Matuesz', 'Okrutnik', 2018),
-  //     new Student('Cowiek', 'Maupa', 5793)
-  //   ];
-  //   this.showAddStudent = false;
+  communicatorSubscription: Subscription;
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (!this.checkIsLogged()) {
+  //     this.showAddStudent = false;
+  //   }
   // }
 
-  constructor(private studentService: StudentService, private fb: FormBuilder) {
+  constructor(private studentService: StudentService, private fb: FormBuilder, private token: TokenStorage, private communicator: CommunicatorService) {
     this.createForm();
+    this.showAddStudent = false;
+    this.communicatorSubscription = communicator.signOutAnnounced$.subscribe(signOut => {
+      this.showAddStudent = false;
+    });
   }
 
   createForm() {
@@ -55,6 +61,10 @@ export class StudentListComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.communicatorSubscription.unsubscribe();
+  }
+
   addStudentPanel() {
     this.showAddStudent = !this.showAddStudent;
   }
@@ -72,5 +82,9 @@ export class StudentListComponent implements OnInit {
     if (index !== -1) {
       this.students.splice(index, 1);
     }
+  }
+
+  checkIsLogged(): boolean {
+    return this.token.isLogged();
   }
 }

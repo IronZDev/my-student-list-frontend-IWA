@@ -10,11 +10,11 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 import { SpookyComponent } from './spooky/spooky.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {PopoverModule} from 'ngx-popover';
 import {Interceptor} from './app.interceptor';
 import { LoginComponent } from './login/login.component';
 import {AuthService} from './auth.service';
 import {TokenStorage} from './token.storage';
+import {CommunicatorService} from './communicator.service';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -37,7 +37,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ReactiveFormsModule
   ],
-  providers: [StudentService, AuthService, TokenStorage, TokenStorage,
+  providers: [StudentService, AuthService, TokenStorage, CommunicatorService,
     {provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
       multi : true}

@@ -1,26 +1,34 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Student} from '../student';
 import {Mark} from '../mark';
 import {StudentService} from '../student.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TokenStorage} from '../token.storage';
+import {CommunicatorService} from '../communicator.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-student',
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css']
 })
-export class StudentComponent implements OnInit {
+export class StudentComponent implements OnInit, OnDestroy {
   @Input() student: Student;
   showAddMark: boolean;
   showAllMarks: boolean;
   @Output() studentDeleted: EventEmitter<Student>;
   editMarkForm: FormGroup;
+  communicatorSubscription: Subscription;
 
-  constructor(private studentService: StudentService, private fb: FormBuilder) {
+  constructor(private studentService: StudentService, private fb: FormBuilder, private token: TokenStorage, private communicator: CommunicatorService) {
     this.showAddMark = false;
     this.showAllMarks = false;
     this.studentDeleted = new EventEmitter<Student>();
     this.createForm();
+    this.communicatorSubscription = communicator.signOutAnnounced$.subscribe(signOut => {
+      this.showAddMark = false;
+      this.resetEditStates();
+    });
   }
 
   createForm() {
@@ -35,6 +43,10 @@ export class StudentComponent implements OnInit {
     if (this.student.marks.length > 0) {
       this.calculateAverage();
     }
+  }
+
+  ngOnDestroy() {
+    this.communicatorSubscription.unsubscribe();
   }
 
   toggleAddMark() {
@@ -109,5 +121,9 @@ export class StudentComponent implements OnInit {
 
   toggleEditState(mark: Mark) {
     mark.isBeingEdited = !mark.isBeingEdited;
+  }
+
+  checkIsLogged(): boolean {
+    return this.token.isLogged();
   }
 }

@@ -3,9 +3,9 @@
   <div class="pure-u-1-4 move-section"><p>{{student.studentID}}</p></div>
   <div class="pure-u-1-4 move-section"><p>Average: {{student.average}}</p></div>
 <div class="pure-u-1-4 pure-button-group move-section" role="manageStudent"><p>
-  <button class="pure-button button-small" (click)="toggleAddMark()">{{showAddMark === true ? "Cancel" : "Add mark"}}</button>
+  <button [hidden]="!checkIsLogged()" class="pure-button button-small" (click)="toggleAddMark()">{{showAddMark === true ? "Cancel" : "Add mark"}}</button>
   <button class="pure-button button-small" (click)="toggleAllMarks()">{{showAllMarks === true ? "Hide all marks" : "Show all marks"}}</button>
-  <button class="pure-button button-small button-delete" (click)="removeStudent()">Delete student</button>
+  <button [hidden]="!checkIsLogged()" class="pure-button button-small button-delete" (click)="removeStudent()">Delete student</button>
 </p></div>
 </div>
 <div *ngIf="showAllMarks">
@@ -15,7 +15,7 @@
         Subject: {{mark.subject}}<br>
         Mark: {{mark.value}}<br>
         Weight: {{mark.weight}}<br>
-        <button class="pure-button pure-button-primary button-small" (click)="toggleEditState(mark)">Edit mark</button> <button class="pure-button button-delete button-small" (click)="deleteMark(mark)">Delete mark</button>
+        <button [hidden]="!checkIsLogged()" class="pure-button pure-button-primary button-small" (click)="toggleEditState(mark)">Edit mark</button> <button [hidden]="!checkIsLogged()" class="pure-button button-delete button-small" (click)="deleteMark(mark)">Delete mark</button>
       </div>
       <div *ngIf="mark.isBeingEdited">
         <form class="pure-form" [formGroup]="editMarkForm">

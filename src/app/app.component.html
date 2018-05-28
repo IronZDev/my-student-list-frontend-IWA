@@ -13,21 +13,23 @@
     <div *ngIf="this.router.url === '/home'">
       <li class="active"><a [routerLink]="['/home']" class="item" >Student list</a></li>
       <li><a [routerLink]="['/spooky']" class="item">2spooky4me</a></li>
-      <li style="float: right"><a [routerLink]="['/login']" class="item, inactive">Login</a></li>
+      <li *ngIf="!checkIsLogged()" style="float: right"><a [routerLink]="['/login']" class="item, inactive">Login</a></li>
     </div>
     <div *ngIf="this.router.url === '/spooky'">
       <li><a [routerLink]="['/home']" class="item" >Student list</a></li>
       <li class="active"><a [routerLink]="['/spooky']" class="item">2spooky4me</a></li>
-      <li style="float: right"><a [routerLink]="['/login']" class="item, inactive">Login</a></li>
+      <li *ngIf="!checkIsLogged()" style="float: right"><a [routerLink]="['/login']" class="item, inactive">Login</a></li>
     </div>
     <div *ngIf="this.router.url === '/login'">
       <li><a [routerLink]="['/home']" class="item" >Student list</a></li>
       <li><a [routerLink]="['/spooky']" class="item">2spooky4me</a></li>
-      <li class="active" style="float: right"><a [routerLink]="['/login']" class="item, inactive">Login</a></li>
+      <li *ngIf="!checkIsLogged()" style="float: right"><a [routerLink]="['/login']" class="item, active">Login</a></li>
     </div>
+    <li *ngIf="checkIsLogged()" style="float: right"><button (click)="signOut()" class="item, inactive">Logout</button></li>
   </ul>
   <hr style="height:5pt; visibility:hidden;" />
   <hr size="2" color="black"/>
 </nav>
 <p><router-outlet></router-outlet></p>
 </div>
+
